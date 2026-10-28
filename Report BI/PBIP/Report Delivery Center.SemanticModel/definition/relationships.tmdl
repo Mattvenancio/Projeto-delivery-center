@@ -1,0 +1,40 @@
+relationship 92eac94b-58d2-4092-bc76-267fb2984124
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fOrders.order_moment_created
+	toColumn: LocalDateTable_f24996ce-c963-4b6c-a220-5e5b27b1245e.Date
+
+relationship a2e00404-c861-4cd7-b464-953472162667
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fOrders.order_moment_accepted
+	toColumn: LocalDateTable_61e25380-cc3f-4923-8823-1fc0cb8239a6.Date
+
+relationship AutoDetected_bbe5d183-e098-49bb-9661-3aa53d2348a6
+	fromColumn: fPayments.payment_order_id
+	toColumn: fOrders.payment_order_id
+
+relationship AutoDetected_84af4923-7f65-4eca-9ead-776f6e38c6f6
+	fromColumn: fOrders.channel_id
+	toColumn: dChannels.channel_id
+
+relationship AutoDetected_9b541e82-0136-4724-9198-3dad668d0d93
+	fromColumn: fOrders.store_id
+	toColumn: dStores.store_id
+
+relationship c54182cf-8554-477d-a550-d70b1992c917
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dCalendario.Date
+	toColumn: LocalDateTable_78d4e426-50fa-4cd6-9d64-7d0b40cf6407.Date
+
+relationship 5cb85686-a50b-f50b-362e-d3fe182d3309
+	fromColumn: fOrders.order_date
+	toColumn: dCalendario.Date
+
+relationship 105b4382-9c6f-4665-8423-597bf5db61ab
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fOrders.order_moment_delivering
+	toColumn: LocalDateTable_a7856b66-4e22-417c-8583-12d3b3f8f7a0.Date
+
+relationship AutoDetected_ba632b95-0f43-4123-ab02-0310920a4ea2
+	fromColumn: fOrders.driver_id
+	toColumn: dDrivers.driver_id
+

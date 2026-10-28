@@ -1,0 +1,28 @@
+expression dHubs =
+		let
+		    Source = Csv.Document(File.Contents("D:\Users\Mateus Venâncio\Downloads\BI - DataLP\Base de dados\hubs.csv"),[Delimiter=",", Columns=6, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"hub_id", Int64.Type}, {"hub_name", type text}, {"hub_city", type text}, {"hub_state", type text}, {"hub_latitude", Int64.Type}, {"hub_longitude", Int64.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: af064be4-314e-4143-854a-7bfb934e6399
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression dDeliveries =
+		let
+		    Source = Csv.Document(File.Contents("D:\Users\Mateus Venâncio\Downloads\BI - DataLP\Base de dados\deliveries.csv"),[Delimiter=",", Columns=5, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"delivery_id", Int64.Type}, {"delivery_order_id", Int64.Type}, {"driver_id", Int64.Type}, {"delivery_distance_meters", Int64.Type}, {"delivery_status", type text}}),
+		    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each ([delivery_status] <> "CANCELLED")),
+		    #"Removed Duplicates" = Table.Distinct(#"Filtered Rows", {"delivery_order_id"})
+		in
+		    #"Removed Duplicates"
+	lineageTag: 085e7403-c40f-492d-8a63-4e85458fcad9
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

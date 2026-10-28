@@ -1,0 +1,31 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: pt-BR
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["fPayments","dDeliveries","dDrivers","dChannels","dStores","fOrders","dHubs","Dicionário de Medidas DAX"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table fPayments
+ref table dDrivers
+ref table dChannels
+ref table dStores
+ref table fOrders
+ref table DateTableTemplate_0179d757-232c-44c6-9a7a-870fd44be28a
+ref table LocalDateTable_f24996ce-c963-4b6c-a220-5e5b27b1245e
+ref table LocalDateTable_61e25380-cc3f-4923-8823-1fc0cb8239a6
+ref table dCalendario
+ref table LocalDateTable_78d4e426-50fa-4cd6-9d64-7d0b40cf6407
+ref table Medidas
+ref table LocalDateTable_a7856b66-4e22-417c-8583-12d3b3f8f7a0
+ref table 'Parâmetro Gargalo Operacional'
+ref table 'Dicionário de Medidas DAX'
+
+ref cultureInfo en-US
+
