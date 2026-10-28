@@ -1,0 +1,138 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 898.63244065412289
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 585.24846873438878,
+            "y": 989.78194900879384
+          },
+          "nodeIndex": "dChannels",
+          "nodeLineageTag": "1bab01c9-39b5-4a12-9886-55eea583ef3a",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 81.104938739292464,
+            "y": 951.24029767495426
+          },
+          "nodeIndex": "dDrivers",
+          "nodeLineageTag": "8e532982-826f-461d-be9c-0fb0ee541b62",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 546.28698081120763,
+            "y": 1517.4730510637187
+          },
+          "nodeIndex": "dStores",
+          "nodeLineageTag": "ac0f1a0f-ff8f-45a7-9481-a274afa73990",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 302.36956490857466,
+            "y": 1149.5114812572394
+          },
+          "nodeIndex": "fOrders",
+          "nodeLineageTag": "989e9db5-dab7-48ed-96b6-a32752eeffce",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 83.516342126593827,
+            "y": 1584.9582405108981
+          },
+          "nodeIndex": "dCalendario",
+          "nodeLineageTag": "dbf230e2-2f03-496a-9473-549742e543a8",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 1185.2992929680106,
+            "y": 1473.7636309400323
+          },
+          "nodeIndex": "Medidas",
+          "nodeLineageTag": "cce08db7-de95-4275-8c63-c6cc6287e315",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 881.7074629987294,
+            "y": 1223.0332671774083
+          },
+          "nodeIndex": "fPayments",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 1167.5855852282427,
+            "y": 913.99941582819406
+          },
+          "nodeIndex": "Dicionário de Medidas DAX",
+          "nodeLineageTag": "5a9fae38-23be-4081-a8d7-fccbe79b129e",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 1183.5906516942391,
+            "y": 1225.5753204854332
+          },
+          "nodeIndex": "Parâmetro Gargalo Operacional",
+          "nodeLineageTag": "65c69600-0068-45e0-b318-8a2cd147f5b7",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 48.96328911514923,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}
