@@ -1,0 +1,42 @@
+table dChannels
+	lineageTag: 1bab01c9-39b5-4a12-9886-55eea583ef3a
+
+	column channel_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 62f3ea3c-6d32-4677-a52e-428ce0a33c55
+		summarizeBy: none
+		sourceColumn: channel_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column channel_name
+		dataType: string
+		lineageTag: 70a815a7-5cda-4818-816c-24eb5b4aba4d
+		summarizeBy: none
+		sourceColumn: channel_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column channel_type
+		dataType: string
+		lineageTag: a48a629f-f725-4220-8de2-b068440d516d
+		summarizeBy: none
+		sourceColumn: channel_type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dChannels = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("D:\Users\Mateus Venâncio\Downloads\BI - DataLP\Base de dados\channels.csv"),[Delimiter=",", Columns=3, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"channel_id", Int64.Type}, {"channel_name", type text}, {"channel_type", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,267 @@
+table Medidas
+	lineageTag: cce08db7-de95-4275-8c63-c6cc6287e315
+
+	measure 'Total Pedidos' = COUNTROWS(fOrders)
+		formatString: #,0
+		displayFolder: Medidas Gerais
+		lineageTag: eee125b8-335b-4039-8c17-c2b39d2756cc
+
+	measure 'Receita Total' = SUM(fOrders[order_amount])
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		displayFolder: Medidas Gerais
+		lineageTag: 85e7b1f0-e090-4ae9-8ddb-f3a7056e949c
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Ticket Medio' = DIVIDE([Receita Total], [Total Pedidos], 0)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Medidas Gerais
+		lineageTag: 24d41c22-c4fe-46e5-8d4a-9aad5675ed43
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Pedidos Cancelados' = ```
+			
+			CALCULATE(
+			    [Total Pedidos], 
+			    KEEPFILTERS(fOrders[order_status] = "CANCELED")
+			)
+			
+			```
+		formatString: 0
+		displayFolder: Cancelamentos e Devoluções
+		lineageTag: 70053b33-5b22-4470-8c76-1158ad0459bb
+
+	measure 'Tempo Medio Entrega (min)' = ```
+			
+			AVERAGEX(
+			    FILTER(
+			        fOrders, 
+			        fOrders[order_status] IN {"DELIVERED", "FINISHED"} &&
+			        NOT(ISBLANK(fOrders[order_metric_cycle_time])) &&
+			        fOrders[order_metric_cycle_time] > 0
+			    ),
+			    fOrders[order_metric_cycle_time]
+			)
+			```
+		formatString: 0
+		displayFolder: Logística, Tempos e Custos
+		lineageTag: 107da034-0798-4a39-a3ab-ce23e96d2aad
+
+	measure 'Custo Medio Entrega' = ```
+			
+			AVERAGEX(
+			    FILTER(
+			        fOrders, 
+			        fOrders[order_status] IN {"DELIVERED", "FINISHED"} && 
+			        NOT(ISBLANK(fOrders[order_delivery_cost]))
+			    ),
+			    fOrders[order_delivery_cost]
+			)
+			```
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Logística, Tempos e Custos
+		lineageTag: 38881cd2-da53-4b52-9dfe-1e60292073f3
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure '% Pedidos Cancelados' = ```
+			
+			VAR vCancelados = 
+			    CALCULATE(
+			        [Total Pedidos], 
+			        fOrders[order_status] = "CANCELED", 
+			        ALL(fOrders[order_status])
+			    )
+			VAR vTotalGeral = 
+			    CALCULATE(
+			        [Total Pedidos], 
+			        ALL(fOrders[order_status])
+			    )
+			RETURN
+			    DIVIDE(vCancelados, vTotalGeral, 0)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Cancelamentos e Devoluções
+		lineageTag: 7157219d-5460-478e-9fd8-104c6e390957
+
+	measure '% Devolucao Pedidos' = ```
+			
+			VAR PedidosNaoEntregues = 
+			    CALCULATE(
+			        [Total Pedidos], 
+			        fOrders[order_status] IN {"CANCELED"} && NOT(ISBLANK(fOrders[order_moment_delivering]))
+			    )
+			RETURN
+			    DIVIDE(PedidosNaoEntregues, [Total Pedidos], 0)
+			```
+		displayFolder: Cancelamentos e Devoluções
+		lineageTag: 9713c116-ab4c-4119-aab3-1dccd6f08847
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Qtd Hubs Ativos' = DISTINCTCOUNT(dStores[hub_id])
+		formatString: 0
+		displayFolder: Parceiros e Cobertura
+		lineageTag: ba01124b-b31f-4b13-83ea-1a48e4a32c5c
+
+	measure 'Qtd Lojas Parceiras' = DISTINCTCOUNT(fOrders[store_id])
+		formatString: 0
+		displayFolder: Parceiros e Cobertura
+		lineageTag: 6686312a-b071-480a-91be-9a452870160b
+
+	measure 'Total Pagamentos' = SUM(fPayments[payment_amount])
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		displayFolder: Medidas Gerais
+		lineageTag: 76bead17-140e-49b5-8b73-0e98b0ef5714
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure '% no Prazo/SLA' = ```
+			
+			VAR TotalConcluidos = 
+			    CALCULATE(
+			        COUNTROWS(fOrders),
+			        fOrders[order_status] IN {"DELIVERED", "FINISHED"},
+			        NOT(ISBLANK(fOrders[order_metric_cycle_time]))
+			    )
+			VAR NoPrazo = 
+			    CALCULATE(
+			        COUNTROWS(fOrders),
+			        fOrders[order_status] IN {"DELIVERED", "FINISHED"},
+			        fOrders[order_metric_cycle_time] <= 2700
+			    )
+			RETURN
+			    DIVIDE(NoPrazo, TotalConcluidos, 0)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Logística, Tempos e Custos
+		lineageTag: c316e261-6ee7-46a0-9331-9119823a7081
+
+	measure 'Tempo Atendimento (min)' = ```
+			
+			AVERAGEX(
+			    FILTER(
+			        fOrders, 
+			        NOT(ISBLANK(fOrders[order_moment_created])) &&
+			        NOT(ISBLANK(fOrders[order_moment_accepted])) &&
+			        fOrders[order_moment_accepted] >= fOrders[order_moment_created]
+			    ),
+			    DATEDIFF(fOrders[order_moment_created], fOrders[order_moment_accepted], SECOND) / 60
+			)
+			```
+		formatString: #,0.00
+		displayFolder: Logística, Tempos e Custos
+		lineageTag: 2ce69e75-527a-44ab-9465-20deedfa6411
+
+	measure 'Tempo Produção (min)' = ```
+			
+			AVERAGEX(
+			    FILTER(
+			        fOrders, 
+			        fOrders[order_status] IN {"DELIVERED", "FINISHED"} &&
+			        NOT(ISBLANK(fOrders[order_metric_production_time])) &&
+			        fOrders[order_metric_production_time] > 0
+			    ),
+			    fOrders[order_metric_production_time]
+			)
+			```
+		formatString: 0.00
+		displayFolder: Logística, Tempos e Custos
+		lineageTag: a34bb13c-8673-4c5a-9f62-fcd100b70d70
+
+	measure 'Tempo Coleta (min)' = ```
+			
+			AVERAGEX(
+			    FILTER(
+			        fOrders, 
+			        fOrders[order_status] IN {"DELIVERED", "FINISHED"} &&
+			        NOT(ISBLANK(fOrders[order_metric_collected_time])) &&
+			        fOrders[order_metric_collected_time] > 0
+			    ),
+			    fOrders[order_metric_collected_time]
+			)
+			```
+		formatString: 0.00
+		displayFolder: Logística, Tempos e Custos
+		lineageTag: 9e1bc090-7134-43fb-80a7-064b3365515e
+
+	measure 'Tempo Trânsito (min)' = ```
+			
+			AVERAGEX(
+			    FILTER(
+			        fOrders, 
+			        fOrders[order_status] IN {"DELIVERED", "FINISHED"} &&
+			        NOT(ISBLANK(fOrders[order_metric_transit_time])) &&
+			        fOrders[order_metric_transit_time] > 0
+			    ),
+			    fOrders[order_metric_transit_time]
+			) 
+			```
+		formatString: 0.00
+		displayFolder: Logística, Tempos e Custos
+		lineageTag: fdaed7f7-5c7d-4c05-a411-b984d8bafea2
+
+	measure 'Distancia Media (km)' =
+			
+			AVERAGEX(
+			    FILTER(
+			        fOrders,
+			        NOT(ISBLANK(fOrders[delivery_distance_meters])) &&
+			        fOrders[delivery_distance_meters] > 0 &&
+			        fOrders[delivery_distance_meters] < 100000 -- descarta erros de telemetria extremos
+			    ),
+			    fOrders[delivery_distance_meters] / 1000
+			)
+		formatString: 0.00
+		displayFolder: Logística, Tempos e Custos
+		lineageTag: 8c786078-43fe-46ee-b4b8-3d82b3893c8b
+
+	measure 'Faturamento Parceiros' = DIVIDE([Receita Total], [Qtd Lojas Parceiras], 0)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Parceiros e Cobertura
+		lineageTag: 61583172-9720-4b90-a4a4-9255b6e5458e
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Qtd Entregadores Ativos' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(fOrders[driver_id]),
+			    NOT(ISBLANK(fOrders[driver_id]))
+			)
+		formatString: #,0
+		displayFolder: Parceiros e Cobertura
+		lineageTag: 3eb2ed31-f274-45c4-93e5-7460b07015aa
+
+	measure 'Qtd de Transações' = COUNTROWS(fPayments)
+		formatString: #,0
+		displayFolder: Medidas Gerais
+		lineageTag: 1e81589b-7c66-4e70-9054-2aa3ea28471d
+
+	measure 'Titulo Tooltip Metodo' = SELECTEDVALUE(fPayments[payment_method], "Todos os Métodos")
+		displayFolder: Medidas Gerais
+		lineageTag: 78e7c821-481a-43da-bc7f-3206cacd24a9
+
+	measure 'Titulo Tooltip Hubs' = SELECTEDVALUE(dStores[hub_city], "Todos os Hubs")
+		displayFolder: Medidas Gerais
+		lineageTag: 69e36c08-b865-4673-a155-16945bce2e8f
+
+	column Column
+		isHidden
+		formatString: 0
+		lineageTag: 8e788400-f1b1-49e9-9a6f-dfadecfe5817
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Medidas = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 9a18804e8d644d6ea59eca54f8ea8a01
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

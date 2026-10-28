@@ -1,0 +1,53 @@
+table fPayments
+	lineageTag: 94ace49f-af7f-4393-a19d-221af9cb153a
+
+	column payment_order_id
+		dataType: string
+		lineageTag: a5f219ad-c185-4ad9-8bac-d451e3a21ffb
+		summarizeBy: none
+		sourceColumn: payment_order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_amount
+		dataType: double
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		lineageTag: 8954eca4-034c-4b91-bc49-af3ee94d2424
+		summarizeBy: sum
+		sourceColumn: payment_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column payment_method
+		dataType: string
+		lineageTag: 13d4a1c2-0595-44e7-8e89-185f1b9c8ea8
+		summarizeBy: none
+		sourceColumn: payment_method
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_status
+		dataType: string
+		lineageTag: b7fe852a-649a-4e93-b4e2-852f9c89fdc9
+		summarizeBy: none
+		sourceColumn: payment_status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fPayments = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("D:\Users\Mateus Venâncio\Downloads\BI - DataLP\Base de dados\payments.csv"),[Delimiter=",", Columns=6, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type with Locale" = Table.TransformColumnTypes(#"Promoted Headers", {{"payment_amount", type number}}, "en-US"),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type with Locale",{"payment_id", "payment_fee"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

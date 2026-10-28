@@ -1,0 +1,71 @@
+table dStores
+	lineageTag: ac0f1a0f-ff8f-45a7-9481-a274afa73990
+
+	column store_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e2df1b5e-f66a-4cc1-8cd3-9dd5396e71d4
+		summarizeBy: none
+		sourceColumn: store_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column hub_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 6eb5ac0f-6b99-450f-acd5-46c075a00358
+		summarizeBy: none
+		sourceColumn: hub_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column store_name
+		dataType: string
+		lineageTag: d65a30ca-52af-4765-99ff-cb981657d5a7
+		summarizeBy: none
+		sourceColumn: store_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column store_segment
+		dataType: string
+		lineageTag: 58864d01-e270-49ae-8cc3-87b673a5745e
+		summarizeBy: none
+		sourceColumn: store_segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column hub_name
+		dataType: string
+		lineageTag: 533d7ae5-752e-46b3-8631-14f91b2556db
+		summarizeBy: none
+		sourceColumn: hub_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column hub_city
+		dataType: string
+		lineageTag: d9bdd05b-3d4e-4c0b-97d7-5fc34f81f241
+		summarizeBy: none
+		sourceColumn: hub_city
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dStores = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("D:\Users\Mateus Venâncio\Downloads\BI - DataLP\Base de dados\stores.csv"),[Delimiter=",", Columns=7, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"store_id", Int64.Type}, {"hub_id", Int64.Type}, {"store_name", type text}, {"store_segment", type text}, {"store_plan_price", Int64.Type}, {"store_latitude", Int64.Type}, {"store_longitude", Int64.Type}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"store_latitude", "store_longitude"}),
+				    #"Merged Queries" = Table.NestedJoin(#"Removed Columns", {"hub_id"}, dHubs, {"hub_id"}, "dHubs", JoinKind.LeftOuter),
+				    #"Expanded dHubs" = Table.ExpandTableColumn(#"Merged Queries", "dHubs", {"hub_name", "hub_city", "hub_state"}, {"hub_name", "hub_city", "hub_state"}),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Expanded dHubs",{"hub_state", "store_plan_price"})
+				in
+				    #"Removed Columns1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

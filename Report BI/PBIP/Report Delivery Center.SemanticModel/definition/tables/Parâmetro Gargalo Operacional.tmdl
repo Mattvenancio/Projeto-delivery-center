@@ -1,0 +1,49 @@
+table 'Parâmetro Gargalo Operacional'
+	lineageTag: 65c69600-0068-45e0-b318-8a2cd147f5b7
+
+	column 'Etapas dos Ciclo'
+		lineageTag: c32f8abb-3eb3-4c6d-981d-cfa0efb778cf
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Etapas dos Ciclo Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Etapas dos Ciclo Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Etapas dos Ciclo Fields'
+		isHidden
+		lineageTag: abb282f7-c392-461c-b80b-1851b689a671
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Etapas dos Ciclo Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Etapas dos Ciclo Order'
+		isHidden
+		formatString: 0
+		lineageTag: 57a07f9e-9ec3-4027-85e8-4eff3c0c010f
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Parâmetro Gargalo Operacional' = calculated
+		mode: import
+		source =
+				{
+				    ("Tempo Coleta (min)", NAMEOF('Medidas'[Tempo Coleta (min)]), 0),
+				    ("Tempo Produção (min)", NAMEOF('Medidas'[Tempo Produção (min)]), 1),
+				    ("Tempo Trânsito (min)", NAMEOF('Medidas'[Tempo Trânsito (min)]), 2)
+				}
+
+	annotation PBI_Id = 56d72dafc6c74afd921440f10d350737
+

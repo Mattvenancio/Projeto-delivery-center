@@ -1,0 +1,51 @@
+table 'Dicionário de Medidas DAX'
+	lineageTag: 5a9fae38-23be-4081-a8d7-fccbe79b129e
+
+	column 'Nome da Medida'
+		dataType: string
+		lineageTag: a7be163d-e67c-4f6c-9c26-98ab7f08cbf0
+		summarizeBy: none
+		sourceColumn: Nome da Medida
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fórmula DAX'
+		dataType: string
+		lineageTag: 21c9ef7b-d985-492f-a02e-07072bd286af
+		summarizeBy: none
+		sourceColumn: Fórmula DAX
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Descrição da Regra de Negócio'
+		dataType: string
+		lineageTag: af59991a-1ab2-4a8d-bdad-515b2049f99d
+		summarizeBy: none
+		sourceColumn: Descrição da Regra de Negócio
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Visual / Contexto de Aplicação'
+		dataType: string
+		lineageTag: 02840dd3-7b99-4e19-884a-73d2d15c28f4
+		summarizeBy: none
+		sourceColumn: Visual / Contexto de Aplicação
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Dicionário de Medidas DAX' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\Users\Mateus Venâncio\Downloads\BI - DataLP\Base de dados\dicionario_medidas_dax_.xlsx"), null, true),
+				    #"Dicionário de Medidas DAX_Sheet" = Source{[Item="Dicionário de Medidas DAX",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Dicionário de Medidas DAX_Sheet", [PromoteAllScalars=true]),
+				    #"Promoted Headers1" = Table.PromoteHeaders(#"Promoted Headers", [PromoteAllScalars=true]),
+				    #"Promoted Headers2" = Table.PromoteHeaders(#"Promoted Headers1", [PromoteAllScalars=true])
+				in
+				    #"Promoted Headers2"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

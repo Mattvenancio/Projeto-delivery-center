@@ -1,0 +1,42 @@
+table dDrivers
+	lineageTag: 8e532982-826f-461d-be9c-0fb0ee541b62
+
+	column driver_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 387d7090-edf9-406b-80ae-8c3f39738ffd
+		summarizeBy: none
+		sourceColumn: driver_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column driver_modal
+		dataType: string
+		lineageTag: 9213c558-e64d-48f4-9653-a0967f97ce23
+		summarizeBy: none
+		sourceColumn: driver_modal
+
+		annotation SummarizationSetBy = Automatic
+
+	column driver_type
+		dataType: string
+		lineageTag: f490ae14-d606-42b6-ac88-d8762b42dbe0
+		summarizeBy: none
+		sourceColumn: driver_type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dDrivers = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("D:\Users\Mateus Venâncio\Downloads\BI - DataLP\Base de dados\drivers.csv"),[Delimiter=",", Columns=3, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"driver_id", Int64.Type}, {"driver_modal", type text}, {"driver_type", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

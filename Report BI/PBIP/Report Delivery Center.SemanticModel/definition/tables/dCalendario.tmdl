@@ -1,0 +1,155 @@
+table dCalendario
+	lineageTag: dbf230e2-2f03-496a-9473-549742e543a8
+
+	column Date
+		formatString: Short Date
+		lineageTag: ce9cda71-7b9e-4b8f-83bd-f02f36e5d2ce
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: c54182cf-8554-477d-a550-d70b1992c917
+			defaultHierarchy: LocalDateTable_78d4e426-50fa-4cd6-9d64-7d0b40cf6407.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ano
+		formatString: 0
+		lineageTag: 6230175b-de76-415a-bfa2-5cdf8d54c1fe
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Ano]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Numero Mes'
+		formatString: 0
+		lineageTag: 51b1fb0a-5330-48f3-9cae-97b02a33cfb7
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Numero Mes]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes
+		lineageTag: 4641f444-ca35-4225-a545-82fbb4958ebf
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Mes]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mes Completo'
+		lineageTag: f4d58bef-8395-4e2d-b253-269212d6bd65
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Mes Completo]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ano Mes'
+		lineageTag: 351d791a-6ec8-4779-b5e1-96987f39df92
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Ano Mes]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ano Mes Ordenacao'
+		formatString: 0
+		lineageTag: ecad88af-4db4-4f28-8414-98e1876575d0
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Ano Mes Ordenacao]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Trimestre
+		lineageTag: 55278c16-c7ab-477c-936d-78942c2f80e9
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Trimestre]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Semana do Ano'
+		formatString: 0
+		lineageTag: 6107fac4-f9b2-4c85-95b1-f040f336c341
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Semana do Ano]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Dia
+		formatString: 0
+		lineageTag: c32195d6-775e-4d00-b080-457c36d4e264
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Dia]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dia da Semana Num'
+		formatString: 0
+		lineageTag: ffca8ae6-bb34-42df-876e-18c8752d6372
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Dia da Semana Num]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dia da Semana'
+		lineageTag: f6c24c07-4c51-415b-a573-bb36931326e3
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Dia da Semana]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dia da Semana Abreviado'
+		dataType: string
+		lineageTag: 61ca4260-d212-4409-a608-542c56b403eb
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Dia da Semana Abreviado]
+		sortByColumn: 'Dia da Semana Num'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Eh Fim de Semana'
+		lineageTag: 419717ab-83c9-4c67-93d6-d783228da5ec
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Eh Fim de Semana]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dCalendario = calculated
+		mode: import
+		source =
+				
+				VAR DataMinima = DATEVALUE(MIN(fOrders[order_moment_created]))
+				VAR DataMaxima = DATEVALUE(MAX(fOrders[order_moment_created]))
+				RETURN
+				    ADDCOLUMNS(
+				        CALENDAR(DataMinima, DataMaxima),
+				        "Ano", YEAR([Date]),
+				        "Numero Mes", MONTH([Date]),
+				        "Mes", FORMAT([Date], "mmm"),
+				        "Mes Completo", FORMAT([Date], "mmmm"),
+				        "Ano Mes", FORMAT([Date], "yyyy-mm"),
+				        "Ano Mes Ordenacao", YEAR([Date]) * 100 + MONTH([Date]),
+				        "Trimestre", "T" & FORMAT([Date], "q"),
+				        "Semana do Ano", WEEKNUM([Date], 2),
+				        "Dia", DAY([Date]),
+				        "Dia da Semana Num", WEEKDAY([Date], 2),
+				        "Dia da Semana", FORMAT([Date], "dddd"),
+				        "Dia da Semana Abreviado", FORMAT([Date], "ddd"),
+				        "Eh Fim de Semana", IF(WEEKDAY([Date], 2) >= 6, "Sim", "Não")
+				    )
+
+	annotation PBI_Id = 1ae9017864d64568988e22907665f369
+

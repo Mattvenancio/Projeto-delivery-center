@@ -1,0 +1,276 @@
+table fOrders
+	lineageTag: 989e9db5-dab7-48ed-96b6-a32752eeffce
+
+	column store_id
+		dataType: string
+		lineageTag: 2378dbb4-5cdf-4950-a09b-dba9c2ff94e3
+		summarizeBy: none
+		sourceColumn: store_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column channel_id
+		dataType: string
+		lineageTag: 3227fa6f-254d-467e-8a19-84e7b28a174d
+		summarizeBy: none
+		sourceColumn: channel_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_order_id
+		dataType: string
+		lineageTag: bd38168f-d56e-4897-b36b-56feaf750eb8
+		summarizeBy: none
+		sourceColumn: payment_order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_order_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 1d140c2a-f342-435a-930e-2e2ca4b33841
+		summarizeBy: sum
+		sourceColumn: delivery_order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_status
+		dataType: string
+		lineageTag: 6476d150-1d6d-46d0-97ef-ddcc105d1153
+		summarizeBy: none
+		sourceColumn: order_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_amount
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 40d80eca-e44d-40eb-be9c-d5360f3f8b95
+		summarizeBy: sum
+		sourceColumn: order_amount
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_delivery_cost
+		dataType: double
+		lineageTag: 39e12199-8890-4e0c-866c-602c13566d66
+		summarizeBy: sum
+		sourceColumn: order_delivery_cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column order_moment_created
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 87616efe-b844-46f3-94fb-9fb0690b4c7b
+		summarizeBy: none
+		sourceColumn: order_moment_created
+
+		variation Variation
+			isDefault
+			relationship: 92eac94b-58d2-4092-bc76-267fb2984124
+			defaultHierarchy: LocalDateTable_f24996ce-c963-4b6c-a220-5e5b27b1245e.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_moment_accepted
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ded7cda2-a2f8-4143-b48c-86defd2c15db
+		summarizeBy: none
+		sourceColumn: order_moment_accepted
+
+		variation Variation
+			isDefault
+			relationship: a2e00404-c861-4cd7-b464-953472162667
+			defaultHierarchy: LocalDateTable_61e25380-cc3f-4923-8823-1fc0cb8239a6.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_metric_collected_time
+		dataType: double
+		lineageTag: 45dc1e80-a6e2-47b6-a0dc-5307ef5e4b9f
+		summarizeBy: sum
+		sourceColumn: order_metric_collected_time
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column order_metric_production_time
+		dataType: double
+		lineageTag: 9d38e48b-1e6c-42e5-945b-e963e49d0c49
+		summarizeBy: sum
+		sourceColumn: order_metric_production_time
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column order_metric_transit_time
+		dataType: double
+		lineageTag: 112e6c59-cf16-4fed-9064-114ac455950e
+		summarizeBy: sum
+		sourceColumn: order_metric_transit_time
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column order_metric_cycle_time
+		dataType: int64
+		formatString: 0
+		lineageTag: e5f7a7c7-860f-4caa-bbe3-5b8694d8dd64
+		summarizeBy: sum
+		sourceColumn: order_metric_cycle_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_created_day
+		dataType: string
+		lineageTag: 5a350275-9e88-4386-8c62-5419db2d70ef
+		summarizeBy: none
+		sourceColumn: order_created_day
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_created_month
+		dataType: string
+		lineageTag: 6a212904-075b-40ca-bf22-58cd3fdea5ae
+		summarizeBy: none
+		sourceColumn: order_created_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_created_year
+		dataType: string
+		lineageTag: 95d67134-e23f-4ba3-bc0a-ac781e07fc73
+		summarizeBy: none
+		sourceColumn: order_created_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_date =
+			
+			DATE(fOrders[order_created_year], fOrders[order_created_month], fOrders[order_created_day])
+		formatString: General Date
+		lineageTag: 610d3a67-69ab-4bf8-8677-bc4438137f9d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_moment_delivering
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2512198a-8392-4e39-a6d0-f58d19e9a9fd
+		summarizeBy: none
+		sourceColumn: order_moment_delivering
+
+		variation Variation
+			isDefault
+			relationship: 105b4382-9c6f-4665-8423-597bf5db61ab
+			defaultHierarchy: LocalDateTable_a7856b66-4e22-417c-8583-12d3b3f8f7a0.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column driver_id
+		dataType: int64
+		formatString: 0
+		lineageTag: a2bf5074-03ec-4ed5-aef9-d8fc1bc420e6
+		summarizeBy: none
+		sourceColumn: driver_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_distance_meters
+		dataType: int64
+		formatString: 0
+		lineageTag: 8c290983-0ab2-4545-8cb8-4e418751c703
+		summarizeBy: sum
+		sourceColumn: delivery_distance_meters
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_status
+		dataType: string
+		lineageTag: b9e97213-dcc5-4198-ae46-9e1f9450a95d
+		summarizeBy: none
+		sourceColumn: delivery_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_created_hour
+		dataType: int64
+		formatString: 0
+		lineageTag: ce08299b-56d1-4955-9bdb-43f3dc614cf9
+		summarizeBy: sum
+		sourceColumn: order_created_hour
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column driver_modal_categorizado = ```
+			
+			VAR vModal = RELATED(dDrivers[driver_modal])
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    -- 1. Possui o modal cadastrado normalmente na dDrivers
+			    NOT(ISBLANK(vModal)), 
+			        vModal,
+			    
+			    -- 2. Houve entrega e distância medida, mas o entregador não tem cadastro em dDrivers
+			    NOT(ISBLANK(fOrders[delivery_distance_meters])) && ISBLANK(vModal), 
+			        "Entregador Sem Cadastro",
+			    
+			    -- 3. Pedido concluído sem despacho/sem entrega registrada (Takeout / Entrega Própria)
+			    fOrders[order_status] IN {"DELIVERED", "FINISHED"} && ISBLANK(fOrders[delivery_distance_meters]), 
+			        "Retirada / Logística Própria",
+			    
+			    -- 4. Pedido cancelado antes de alocar motorista
+			    fOrders[order_status] = "CANCELED", 
+			        "Cancelado sem Alocação",
+			    
+			    -- Caso residual
+			    "Outros / Não Informado"
+			)
+			```
+		lineageTag: c38b4109-c8ff-46cc-babe-b7fd65e65103
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fOrders = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("D:\Users\Mateus Venâncio\Downloads\BI - DataLP\Base de dados\orders.csv"),[Delimiter=",", Columns=29, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Promoted Headers",{"order_moment_collected", "order_moment_in_expedition",  "order_moment_delivered", "order_moment_finished"}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Removed Columns1",{"order_created_minute"}),
+				    #"Changed Type with Locale1" = Table.TransformColumnTypes(#"Removed Columns", {{"order_moment_created", type datetime}}, "en-US"),
+				    #"Changed Type with Locale2" = Table.TransformColumnTypes(#"Changed Type with Locale1", {{"order_moment_accepted", type datetime}}, "en-US"),
+				    #"Changed Type with Locale" = Table.TransformColumnTypes(#"Changed Type with Locale2", {{"order_moment_delivering", type datetime}}, "en-US"),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Changed Type with Locale",{{"delivery_order_id", Int64.Type}}),
+				    #"Sorted Rows" = Table.Sort(#"Changed Type",{{"delivery_order_id", Order.Ascending}}),
+				    #"Merged Queries1" = Table.NestedJoin(#"Sorted Rows", {"delivery_order_id"}, dDeliveries, {"delivery_order_id"}, "dDeliveries.1", JoinKind.LeftOuter),
+				    #"Expanded dDeliveries.1" = Table.ExpandTableColumn(#"Merged Queries1", "dDeliveries.1", {"driver_id", "delivery_distance_meters", "delivery_status"}, {"driver_id", "delivery_distance_meters", "delivery_status"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Expanded dDeliveries.1", {"order_id"}),
+				    #"Changed Type with Locale3" = Table.TransformColumnTypes(#"Removed Duplicates", {{"order_delivery_cost", type number}}, "en-US"),
+				    #"Changed Type with Locale4" = Table.TransformColumnTypes(#"Changed Type with Locale3", {{"order_metric_cycle_time", Int64.Type}}, "en-US"),
+				    #"Changed Type with Locale5" = Table.TransformColumnTypes(#"Changed Type with Locale4", {{"order_metric_collected_time", type number}}, "en-US"),
+				    #"Changed Type with Locale6" = Table.TransformColumnTypes(#"Changed Type with Locale5", {{"order_metric_production_time", type number}}, "en-US"),
+				    #"Changed Type with Locale7" = Table.TransformColumnTypes(#"Changed Type with Locale6", {{"order_metric_transit_time", type number}}, "en-US"),
+				    #"Removed Columns2" = Table.RemoveColumns(#"Changed Type with Locale7",{"order_delivery_fee", "order_id", "order_metric_expediton_speed_time", "order_metric_paused_time", "order_metric_walking_time", "order_moment_ready"})
+				in
+				    #"Removed Columns2"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
